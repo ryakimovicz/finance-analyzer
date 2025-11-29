@@ -1,13 +1,10 @@
-Entorno virtual
-
+# Entorno virtual
 venv/
-pycache/
+__pycache__/
 
-Archivos de sistema
-
+# Archivos de sistema
 .DS_Store
 
-Archivos generados (el reporte final no lo queremos subir al repo, se genera al vuelo)
-
+# Archivos generados
 reporte_gastos.pdf
-*.png
+grafico_gastos.png
