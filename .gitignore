@@ -1,0 +1,13 @@
+Entorno virtual
+
+venv/
+pycache/
+
+Archivos de sistema
+
+.DS_Store
+
+Archivos generados (el reporte final no lo queremos subir al repo, se genera al vuelo)
+
+reporte_gastos.pdf
+*.png
