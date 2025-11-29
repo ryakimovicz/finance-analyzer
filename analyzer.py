@@ -1,9 +1,11 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from fpdf import FPDF
 
 # --- Configuración ---
 FILE_PATH = "gastos.csv"
 IMG_PATH = "grafico_gastos.png"
+PDF_PATH = "reporte_gastos.pdf"
 
 # --- Lógica de Análisis ---
 
@@ -40,6 +42,37 @@ def generate_plot(category_expenses):
     plt.close()
     print(f"📊 Gráfico guardado exitosamente como '{IMG_PATH}'")
 
+def generate_pdf(total_spent, category_expenses):
+    """Crea un reporte PDF con los datos y el gráfico."""
+    pdf = FPDF()
+    pdf.add_page()
+    
+    # Título
+    pdf.set_font("Arial", "B", 16)
+    pdf.cell(0, 10, "Reporte de Gastos Personales", ln=True, align="C")
+    pdf.ln(10) # Salto de línea
+    
+    # Resumen General
+    pdf.set_font("Arial", "", 12)
+    pdf.cell(0, 10, f"Total Gastado: ${total_spent:,.2f}", ln=True)
+    pdf.ln(5)
+    
+    # Detalle por Categoría
+    pdf.set_font("Arial", "B", 12)
+    pdf.cell(0, 10, "Detalle por Categoría:", ln=True)
+    pdf.set_font("Arial", "", 12)
+    
+    for category, amount in category_expenses.items():
+        pdf.cell(0, 10, f"- {category}: ${amount:,.2f}", ln=True)
+        
+    # Insertar Gráfico (Imagen)
+    # x=10, y=None (automático), w=100 (ancho)
+    pdf.image(IMG_PATH, x=55, w=100)
+    
+    # Guardar PDF
+    pdf.output(PDF_PATH)
+    print(f"📄 Reporte PDF generado exitosamente: '{PDF_PATH}'")
+
 # --- Ejecución ---
 
 if __name__ == "__main__":
@@ -53,9 +86,10 @@ if __name__ == "__main__":
         total, por_categoria = analyze_data(df)
         
         print(f"💰 Total Gastado: ${total:,.2f}")
-        print("\n📊 Gastos por Categoría:")
-        print(por_categoria)
         
         # Generar Gráfico
-        print("\n🎨 Generando gráfico...")
         generate_plot(por_categoria)
+        
+        # Generar Reporte PDF
+        print("\n📝 Creando reporte PDF...")
+        generate_pdf(total, por_categoria)
